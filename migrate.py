@@ -172,25 +172,27 @@ if __name__ == '__main__':
                     querytype = target.get('queryType')
                     assert querytype in ['Standard Query', 'Power Query']
 
+                    function = 'countPerSec' # set default function value
+
                     if querytype == 'Standard Query':
-                        assert target.get('filter')
+                        filter = target.get('filter') or target.get('queryText')
 
                         target.pop('copyText', None)
                         target.pop('dataLink', None)
-                        filter = target.pop('filter')
-                        function = target.pop('function', 'countPerSec')
+                        filter = target.pop('filter', target.pop('queryText', None))
+                        function = 'countPerSec' if target.get('function') == 'count' else target.get('function', function)
 
                         target['queryType'] = 'Standard'
                         target['expression'] = f'{function}({filter})'
                         target['breakDownFacetValue'] = ''
 
                     elif querytype == 'Power Query':
-                        assert target.get('filter')
+                        filter = target.get('filter') or target.get('queryText')
 
                         target.pop('copyText', None)
                         target.pop('dataLink', None)
 
-                        target['expression'] = target.pop('filter')
+                        target['expression'] = target.pop('filter', target.pop('queryText', None))
                         target['breakDownFacetValue'] = ''
 
                     logging.info(f'updated dashboard {dashboard_label}: panel {panel_label}: target {target_label}')
