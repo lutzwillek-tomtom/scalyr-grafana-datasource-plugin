@@ -22,7 +22,8 @@ jobs:
       # Ref: https://github.com/actions/cache/blob/main/examples.md#node---yarn
       - name: Get yarn cache path
         id: yarn-cache-path
-        run: echo "::set-output name=path::$(yarn cache dir)"
+        run: |
+          echo "path=$(yarn cache dir)" >> $GITHUB_ENV
       - uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache-path.outputs.path }}
