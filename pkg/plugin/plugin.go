@@ -23,6 +23,7 @@ func NewDataSetDatasource(settings backend.DataSourceInstanceSettings) (instance
 		return nil, err
 	}
 	url := strings.TrimSuffix(unsecure.ScalyrUrl, "/")
+        return nil, fmt.Errorf("Provided ScalyrUrl: %q", scalyrUrl)
 
 	apiKey, ok := settings.DecryptedSecureJSONData["apiKey"]
 	if !ok {
