@@ -38,10 +38,15 @@ jobs:
           go-version: 'stable'
       # `mage format` would reformat files
       - name: gofmt check
-        run: test -z "$(gofmt -l pkg)"
-      #- uses: magefile/mage-action@v2
-      #  with:
-      #    args: lint
+        run: |
+          files=$(gofmt -l pkg)
+          if [ -n "$files" ]; then
+            echo "The following files need formatting:"
+            echo "$files"
+            exit 1
+          else
+            echo "All Go files are properly formatted."
+          fi
       - uses: golangci/golangci-lint-action@v3
         with:
           version: 'latest'
