@@ -40,10 +40,10 @@ jobs:
       # `mage format` would reformat files
       - name: gofmt check
         run: |
-          files=$(gofmt -l pkg)
-          if [ -n "$files" ]; then
+          diff=$(gofmt -d pkg)
+          if [ -n "$diff" ]; then
             echo "The following files need formatting:"
-            echo "$files"
+            echo "$diff"
             exit 1
           else
             echo "All Go files are properly formatted."
